@@ -2,23 +2,34 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/Counter.sol";
+import "../src/BookLibrary.sol";
 
 contract CounterTest is Test {
-    Counter public counter;
+    BookLibrary public booklibrary;
 
     function setUp() public {
-        counter = new Counter();
-        counter.setNumber(0);
+        booklibrary = new BookLibrary();
+        booklibrary.addBook(1, "Wizard  of Oz", 1);
     }
 
-    function testIncrement() public {
-        counter.increment();
-        assertEq(counter.number(), 1);
+    function testAddBook() public {
+        booklibrary.addBook(2, "Foundry book", 2);
+        assertEq(booklibrary.totalBooks(),3);
     }
 
-    function testSetNumber(uint256 x) public {
-        counter.setNumber(x);
-        assertEq(counter.number(), x);
+    function testBorrowBook() public {
+        booklibrary.addBook(2, "Foundry book", 2);
+        booklibrary.borrowBook(2);
+        assertEq(booklibrary.totalBooks(),2);
     }
+
+    function testReturnBook() public {
+        booklibrary.addBook(2, "Foundry book", 2);
+        booklibrary.borrowBook(2);
+        booklibrary.returnBook(2);
+        assertEq(booklibrary.totalBooks(),3);
+
+    }
+
+
 }
